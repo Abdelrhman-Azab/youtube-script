@@ -32,8 +32,10 @@ def transcript():
                 proxy_username="mmsjqszc",proxy_password="fy3ur75y5y15",
             )
         )
-        transcript = ytt_api.get_transcript(video_id)
-        script = " ".join([entry['text'] for entry in transcript])
+        transcript =  ytt_api.fetch(video_id)
+        script = ''
+        for snippet in transcript:
+          script+=snippet.text
         return jsonify({'transcript': script})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
