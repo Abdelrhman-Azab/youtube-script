@@ -35,7 +35,7 @@ def transcript():
         transcript =  ytt_api.fetch(video_id)
         script = ''
         for snippet in transcript:
-          script+=snippet.text
+          script+=(' ' +snippet.text)
         return jsonify({'transcript': script})
     except Exception as e:
         return jsonify({'error12': str(e)}), 500
