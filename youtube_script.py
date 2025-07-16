@@ -1,5 +1,7 @@
 from flask import Flask, request, jsonify
 from youtube_transcript_api import YouTubeTranscriptApi
+from youtube_transcript_api.proxies import WebshareProxyConfig
+
 import re
 
 app = Flask(__name__)
@@ -25,7 +27,12 @@ def transcript():
     if not video_id:
         return jsonify({'error': 'Invalid YouTube URL'}), 400
     try:
-        transcript = YouTubeTranscriptApi.get_transcript(video_id)
+        ytt_api = YouTubeTranscriptApi(
+            proxy_config=WebshareProxyConfig(
+                proxy_username="mmsjqszc",proxy_password="fy3ur75y5y15",
+            )
+        )
+        transcript = ytt_api.get_transcript(video_id)
         script = " ".join([entry['text'] for entry in transcript])
         return jsonify({'transcript': script})
     except Exception as e:
@@ -33,3 +40,5 @@ def transcript():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
